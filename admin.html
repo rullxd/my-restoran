@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+    <nav class="admin-navbar">
+        <div class="top-icons">
+            <a href="admin_profile.html" class="icon"><i class="fas fa-user-circle"></i></a>
+        </div>
+        <div class="icon"><i class="fas fa-tachometer-alt"></i></div>
+        <a href="admin_reservations.html" class="icon"><i class="fas fa-calendar-alt"></i></a>
+        <a href="admin_menu.html" class="icon"><i class="fas fa-utensils"></i></a>
+        <div class="icon"><i class="fas fa-chart-line"></i></div>
+        <div class="icon"><i class="fas fa-cog"></i></div>
+        </div>
+        <div class="bottom-icons">
+            <a href="admin.html" class="icon" onclick="handleLoginLogout()"><i class="fas fa-sign-out-alt"></i></a>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="statistics">
+            <div class="stat-card">
+                <h3>Total Pendapatan</h3>
+                <p>IDR 15,000,000</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Reservasi</h3>
+                <p>250</p>
+            </div>
+            <div class="stat-card">
+                <h3>Meja Tersedia</h3>
+                <p>20</p>
+            </div>
+            <div class="stat-card">
+                <h3>Jumlah Hari</h3>
+                <p>30</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Total Reservasi</h2>
+            <div class="chart-container">
+                <canvas id="totalreservasichart" </canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Rata-Rata Pendapatan</h2>
+            <div class="chart-container">
+                <canvas id="averagerevenuechart"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Reservasi Per Hari</h2>
+            <div class="chart-container">
+                <canvas id="dailyReservationsChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Most Popular Menu</h2>
+            <div class="chart-container">
+                <canvas id="menupopuler"></canvas>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Mendapatkan warna dari variabel CSS
+        const rootStyles = getComputedStyle(document.documentElement);
+        const primaryColor = rootStyles.getPropertyValue('--primary-color').trim();
+        const primaryBorderColor = rootStyles.getPropertyValue('--primary-color-dark').trim();
+
+
+
+        // Data grafik
+        const data1 = {
+            labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+            datasets: [{
+                label: 'Jumlah Reservasi',
+                data: [50, 150, 100, 200, 250, 300, 180, 200, 130, 240, 400, 120],
+                backgroundColor: 'rgba(231, 76, 60, 0.7)', // Transparansi warna tema
+                borderColor: '#e74c3c', // Warna tema utama
+                borderWidth: 1
+            }]
+        };
+        const data2 = {
+            labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+            datasets: [{
+                label: 'Jumlah Reservasi',
+                data: [5, 15, 10, 20, 25, 30, 18],
+                backgroundColor: 'rgba(231, 76, 60, 0.7)', // Transparansi warna tema
+                borderColor: '#e74c3c', // Warna tema utama
+                borderWidth: 1
+            }]
+        };
+        const data3 = {
+            labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+            datasets: [{
+                label: 'Rata-rata Pendapatan (IDR)',
+                data: [1500000, 2000000, 1800000, 2200000, 2500000, 3000000, 2800000], // Pendapatan rata-rata per hari
+                backgroundColor: 'rgba(46, 204, 113, 0.7)', // Warna hijau transparan
+                borderColor: '#27ae60', // Warna hijau utama
+                borderWidth: 1
+            }]
+        };
+        const data4 = {
+            labels: ['Siomay Ayam', 'Pangsit Goreng', 'Salad Buah', 'Mie Goreng Seafood'],
+            datasets: [{
+                label: 'Total pelanggan pesan',
+                data: [500, 250, 300, 1500], // Pendapatan rata-rata per hari
+                backgroundColor: [
+                    '#3498db', // Biru
+                    '#9b59b6', // Ungu
+                    '#34495e', // Abu-abu
+                    '#1abc9c'  // Aqua
+                ],
+                borderColor: '#fff',
+                borderWidth: 2
+            }]
+        };
+
+        const options = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                tooltip: {
+                    backgroundColor: '#e74c3c',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    borderColor: '#c0392b',
+                    borderWidth: 1,
+                },
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.1)',
+                    },
+                    ticks: {
+                        color: '#333',
+                    },
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.1)',
+                    },
+                    ticks: {
+                        color: '#333',
+                    },
+                },
+            },
+        };
+
+
+
+        // Total Reservasi
+        const ctx1 = document.getElementById('totalreservasichart').getContext('2d');
+        const totalreservasichart = new Chart(ctx1, {
+            type: 'bar',
+            data: data1,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        // Reservasi Per Hari
+        const ctx2 = document.getElementById('dailyReservationsChart').getContext('2d');
+        const dailyReservationsChart = new Chart(ctx2, {
+            type: 'bar',
+            data: data2,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        // menu populer
+        const ctx4 = document.getElementById('menupopuler').getContext('2d');
+        const menupopuler = new Chart(ctx4, {
+            type: 'pie',
+            data: data4,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        // Rata rata pendapatan
+        const ctx3 = document.getElementById('averagerevenuechart').getContext('2d');
+        const averagerevenuechart = new Chart(ctx3, {
+            type: 'line',
+            data: data3,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        backgroundColor: '#27ae60',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: '#1e8449',
+                        borderWidth: 1,
+                    },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function (value) {
+                                return 'IDR ' + value.toLocaleString(); // Format angka menjadi IDR
+                            },
+                            color: '#333',
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)',
+                        },
+                    },
+                    x: {
+                        ticks: {
+                            color: '#333',
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)',
+                        },
+                    },
+                },
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginToken = localStorage.getItem('loginToken');
+            const userRole = localStorage.getItem('userRole');
+
+            if (!loginToken || userRole !== 'admin') {
+                // Jika token tidak ada atau role bukan admin, arahkan pengguna ke halaman login atau halaman error
+                alert('Anda tidak memiliki izin untuk mengakses halaman ini.');
+                window.location.href = 'index.html'; // Ubah ke halaman yang sesuai, misalnya halaman login atau error
+            }
+        });
+    </script>
+
+
+    <script>
+        function handleLoginLogout() {
+            // Tampilkan dialog konfirmasi
+            const isConfirmed = confirm('Yakin mau logout?');
+
+            if (isConfirmed) {
+                // Jika pengguna memilih "Ya", hapus token dan logout
+                localStorage.removeItem('loginToken');
+                localStorage.removeItem('userId'); // Optional: Hapus userId jika ada
+                console.log('Token dihapus: ', localStorage.getItem('loginToken')); // Cek token setelah dihapus
+                window.location.href = 'login.html'; // Redirect ke halaman login
+            } else {
+                // Jika pengguna memilih "Tidak", batalkan logout
+                console.log('Logout dibatalkan.');
+            }
+        }
+    </script>
+
+    <script>
+        // Script untuk membuat grafik menggunakan library seperti Chart.js atau D3.js
+    </script>
+</body>
+
+</html>

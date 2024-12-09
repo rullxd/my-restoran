@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservasi Per Hari</title>
+    <link rel="stylesheet" href="css/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Styling tambahan untuk card */
+        .card {
+            padding: 1rem;
+            background-color: var(--background-secondary);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px var(--shadow-color-strong);
+            text-align: center;
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            color: var(--heading-color);
+            margin-bottom: 1rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            /* Sesuaikan tinggi sesuai kebutuhan */
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Kartu dengan Grafik -->
+    <div class="card">
+        <h2>Reservasi Per Hari</h2>
+        <div class="chart-container">
+            <canvas id="dailyReservationsChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Script Grafik -->
+    <script>
+        // Mendapatkan warna dari variabel CSS
+        const rootStyles = getComputedStyle(document.documentElement);
+        const primaryColor = rootStyles.getPropertyValue('--primary-color').trim();
+        const primaryBorderColor = rootStyles.getPropertyValue('--primary-color-dark').trim();
+
+        // Data grafik
+        const data = {
+            labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+            datasets: [{
+                label: 'Jumlah Reservasi',
+                data: [5, 15, 10, 20, 25, 30, 18],
+                backgroundColor: primaryColor,
+                borderColor: primaryBorderColor,
+                borderWidth: 1
+            }]
+        };
+
+        // Konfigurasi chart
+        const ctx = document.getElementById('dailyReservationsChart').getContext('2d');
+        const dailyReservationsChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

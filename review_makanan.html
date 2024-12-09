@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Makanan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/riview.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <img src="src/logo.png" alt="Logo" class="logo-img">
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="menu.html">Menu</a>
+                <a href="reservasi.html">Reservasi</a>
+                <a href="galeri.html">Galeri</a>
+                <a href="review_makanan.html">Review</a>
+            </div>
+            <div class="user-section">
+                <!-- User Icon -->
+                <div class="user-icon" onclick="toggleSidebar()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Menu Pengguna</h2>
+            <button class="close-btn" onclick="toggleSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <ul class="sidebar-menu">
+                <li><a href="profile.html">Profil Saya</a></li>
+                <li><a href="#">Riwayat Pesanan</a></li>
+                <li><a href="reservasi_user.html">Reservasi Saya</a></li>
+                <li><a href="#">Voucher</a></li>
+                <li><a href="#">Pengaturan</a></li>
+                <li><a href="#">Bantuan</a></li>
+                <li>
+                    <a href="#" onclick="toggleTheme()">
+                        <i class="fas fa-moon"></i> Ganti Tema
+                    </a>
+                </li>
+            </ul>
+            <a id="loginLogoutButton" href="login.html" class="sidebar-cta-button"
+                onclick="handleLoginLogout()">Login</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo">Review Makanan</div>
+            <a href="#" class="add-review-btn">+ Add Review</a>
+        </div>
+
+        <div class="main-image">
+            <img src="https://cdn.antaranews.com/cache/1200x800/2023/08/29/semaja-makanan.jpg"
+                alt="Gambar Utama Restoran">
+        </div>
+
+        <div class="review-card">
+            <div class="review-header">
+                <div class="user-avatar"></div>
+                <div class="username">Andi Saputra</div>
+            </div>
+            <div class="rating">
+                <div class="stars">★★★★☆</div>
+            </div>
+            <div class="review-text">Makanan enak dan porsinya pas, suka dengan bumbu yang berasa!</div>
+            <div class="images">
+                <img src="https://storage.googleapis.com/a1aa/image/HlZTNsCNmdoiEhAj0zuUVslyDh1XP1T9xW5pSSSMzbLRHu6E.jpg"
+                    alt="Food Image">
+                <img src="https://storage.googleapis.com/a1aa/image/IInUAbCkbj4zJRtWYjUfSlWz1pfUyugftllYfAOzNuML0hrOB.jpg"
+                    alt="Food Image">
+            </div>
+        </div>
+
+        <div class="review-card">
+            <div class="review-header">
+                <div class="user-avatar"></div>
+                <div class="username">Siti Nurhaliza</div>
+            </div>
+            <div class="rating">
+                <div class="stars">★★★★★</div>
+            </div>
+            <div class="review-text">Rasa makanan ini benar-benar lezat, cocok untuk makan malam keluarga!</div>
+            <div class="images">
+                <img src="https://storage.googleapis.com/a1aa/image/eM1qGZzX9MTWIKI15sLPNPjmAsUJnENp7mbC1zLVDqmfc4qTA.jpg"
+                    alt="Food Image">
+                <img src="https://storage.googleapis.com/a1aa/image/lPOEWKQoyVYwDd7U7uZBe6n0tKB8cHoNJVrp0aUyvy7gOc1JA.jpg"
+                    alt="Food Image">
+            </div>
+        </div>
+
+        <div class="review-card">
+            <div class="review-header">
+                <div class="user-avatar"></div>
+                <div class="username">Andi Saputra</div>
+            </div>
+            <div class="rating">
+                <div class="stars">★★★★☆</div>
+            </div>
+            <div class="review-text">Makanan enak dan porsinya pas, suka dengan bumbu yang berasa!</div>
+            <div class="images">
+                <img src="https://storage.googleapis.com/a1aa/image/HlZTNsCNmdoiEhAj0zuUVslyDh1XP1T9xW5pSSSMzbLRHu6E.jpg"
+                    alt="Food Image">
+                <img src="https://storage.googleapis.com/a1aa/image/IInUAbCkbj4zJRtWYjUfSlWz1pfUyugftllYfAOzNuML0hrOB.jpg"
+                    alt="Food Image">
+            </div>
+        </div>
+
+        <div class="review-card">
+            <div class="review-header">
+                <div class="user-avatar"></div>
+                <div class="username">Siti Nurhaliza</div>
+            </div>
+            <div class="rating">
+                <div class="stars">★★★★★</div>
+            </div>
+            <div class="review-text">Rasa makanan ini benar-benar lezat, cocok untuk makan malam keluarga!</div>
+            <div class="images">
+                <img src="https://storage.googleapis.com/a1aa/image/eM1qGZzX9MTWIKI15sLPNPjmAsUJnENp7mbC1zLVDqmfc4qTA.jpg"
+                    alt="Food Image">
+                <img src="https://storage.googleapis.com/a1aa/image/lPOEWKQoyVYwDd7U7uZBe6n0tKB8cHoNJVrp0aUyvy7gOc1JA.jpg"
+                    alt="Food Image">
+            </div>
+        </div>
+
+        <div class="review-card">
+            <div class="review-header">
+                <div class="user-avatar"></div>
+                <div class="username">Budi Santoso</div>
+            </div>
+            <div class="rating">
+                <div class="stars">★★★☆☆</div>
+            </div>
+            <div class="review-text">Makanan lumayan enak, tapi penyajiannya agak lama. Semoga bisa ditingkatkan.</div>
+            <div class="images">
+                <img src="https://storage.googleapis.com/a1aa/image/IInUAbCkbj4zJRtWYjUfSlWz1pfUyugftllYfAOzNuML0hrOB.jpg"
+                    alt="Food Image">
+            </div>
+        </div>
+
+        <div class="review-card">
+            <div class="review-header">
+                <div class="user-avatar"></div>
+                <div class="username">Dewi Anggraeni</div>
+            </div>
+            <div class="rating">
+                <div class="stars">★★★★☆</div>
+            </div>
+            <div class="review-text">Tempat yang nyaman dan makanan yang lezat. Akan kembali lagi!</div>
+            <div class="images">
+                <img src="https://storage.googleapis.com/a1aa/image/lPOEWKQoyVYwDd7U7uZBe6n0tKB8cHoNJVrp0aUyvy7gOc1JA.jpg"
+                    alt="Food Image">
+                <img src="https://storage.googleapis.com/a1aa/image/HlZTNsCNmdoiEhAj0zuUVslyDh1XP1T9xW5pSSSMzbLRHu6E.jpg"
+                    alt="Food Image">
+            </div>
+        </div>
+
+        <div class="review-card">
+            <div class="review-header">
+                <div class="user-avatar"></div>
+                <div class="username">Rizki Pratama</div>
+            </div>
+            <div class="rating">
+                <div class="stars">★★★★★</div>
+            </div>
+            <div class="review-text">Makanan enak dan pelayanan sangat ramah, sangat direkomendasikan!</div>
+            <div class="images">
+                <img src="https://storage.googleapis.com/a1aa/image/IInUAbCkbj4zJRtWYjUfSlWz1pfUyugftllYfAOzNuML0hrOB.jpg"
+                    alt="Food Image">
+            </div>
+        </div>
+
+        <!-- Tambahkan lebih banyak review di sini jika diperlukan -->
+
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.overlay');
+
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function (event) {
+            const sidebar = document.querySelector('.sidebar');
+            const userIcon = document.querySelector('.user-icon');
+
+            if (!sidebar.contains(event.target) && !userIcon.contains(event.target)) {
+                sidebar.classList.remove('active');
+                document.querySelector('.overlay').classList.remove('active');
+            }
+        });
+    </script>
+    <script>
+        // Fungsi untuk mengubah tema
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+
+            if (currentTheme === 'dark') {
+                html.removeAttribute('data-theme');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+            }
+
+            // Simpan preferensi tema ke localStorage
+            localStorage.setItem('theme', html.getAttribute('data-theme') || 'light');
+        }
+
+        // Fungsi untuk memuat tema yang tersimpan
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+        }
+
+        // Panggil loadSavedTheme saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', loadSavedTheme);
+    </script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginLogoutButton = document.getElementById('loginLogoutButton');
+
+            // Cek token login
+            if (localStorage.getItem('loginToken')) {
+                // Jika token ada, ubah menjadi Logout
+                loginLogoutButton.textContent = 'Logout';
+                loginLogoutButton.href = 'index.html';
+            } else {
+                // Jika token tidak ada, tetap sebagai Login
+                loginLogoutButton.textContent = 'Login';
+                loginLogoutButton.href = 'login.html';
+            }
+        });
+
+        function handleLoginLogout() {
+            if (localStorage.getItem('loginToken')) {
+                // Jika sudah login, hapus token untuk logout
+                localStorage.removeItem('loginToken');
+                console.log('Token dihapus: ', localStorage.getItem('loginToken')); // Cek token setelah dihapus
+                window.location.href = 'login.html';
+            } else {
+                console.log('Token tidak ditemukan. Pengguna belum login.');
+                // Jika belum login, redirect ke halaman login
+                window.location.href = 'login.html';
+            }
+        }
+
+
+    </script>
+
+</body>
+
+</html>

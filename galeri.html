@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri Restoran</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/galeri.css">
+
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <img src="src/logo.png" alt="Logo" class="logo-img">
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="menu.html">Menu</a>
+                <a href="reservasi.html">Reservasi</a>
+                <a href="galeri.html">Galeri</a>
+                <a href="review_makanan.html">Review</a>
+            </div>
+            <div class="user-section">
+                <!-- User Icon -->
+                <div class="user-icon" onclick="toggleSidebar()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Menu Pengguna</h2>
+            <button class="close-btn" onclick="toggleSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <ul class="sidebar-menu">
+                <li><a href="profile.html">Profil Saya</a></li>
+                <li><a href="#">Riwayat Pesanan</a></li>
+                <li><a href="reservasi_user.html">Reservasi Saya</a></li>
+                <li><a href="#">Voucher</a></li>
+                <li><a href="#">Pengaturan</a></li>
+                <li><a href="#">Bantuan</a></li>
+                <li>
+                    <a href="#" onclick="toggleTheme()">
+                        <i class="fas fa-moon"></i> Ganti Tema
+                    </a>
+                </li>
+            </ul>
+            <a id="loginLogoutButton" href="login.html" class="sidebar-cta-button"
+                onclick="handleLoginLogout()">Login</a>
+        </div>
+    </div>
+
+    <!-- Galeri Section -->
+    <section class="gallery-section">
+        <h1 class="gallery-header">Galeri Restoran Kami</h1>
+
+        <!-- Kategori: Interior dan Eksterior -->
+        <h2 class="category-header">Interior dan Eksterior</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://arsitagx-master-article.s3-ap-southeast-1.amazonaws.com/article-photo/180/Artikel-Resto-Kayu-Foto-Utama.jpg"
+                    alt="Foto Interior Restoran">
+            </div>
+            <div class="gallery-item">
+                <img src="https://www.ledyilighting.com/wp-content/uploads/2024/07/Highlight-Your-Restaurant-Facades-with-LED-Strips.jpg"
+                    alt="Foto Eksterior Restoran">
+            </div>
+        </div>
+
+        <!-- Kategori: Hidangan Spesial -->
+        <h2 class="category-header">Hidangan Spesial</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1485403635/b9z3psdzjkthgx1mcosh.jpg"
+                    alt="Hidangan Spesial 1">
+            </div>
+            <div class="gallery-item">
+                <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/e1/a9/4f/waroeng-ss-spesial-sambal.jpg?w=600&h=-1&s=1"
+                    alt="Hidangan Spesial 2">
+            </div>
+        </div>
+
+        <!-- Kategori: Aktivitas di Restoran -->
+        <h2 class="category-header">Aktivitas di Restoran</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://cdn.antaranews.com/cache/1200x800/2023/11/22/IMG_20231122_144828.jpg"
+                    alt="Aktivitas di Restoran">
+            </div>
+            <div class="gallery-item">
+                <img src="https://media-cdn.tripadvisor.com/media/photo-s/11/75/85/6e/suasana-restoran-saat.jpg"
+                    alt="Suasana di Restoran">
+            </div>
+        </div>
+
+        <!-- Kategori: Acara Khusus -->
+        <h2 class="category-header">Acara Khusus</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://rumahuk.com/media/huk-290723_2.jpg" alt="Acara Ulang Tahun">
+            </div>
+            <div class="gallery-item">
+                <img src="https://rumahuk.com/media/huk-290723_1.jpg" alt="Acara Pertemuan Bisnis">
+            </div>
+        </div>
+
+        <!-- Kategori: Tim Koki dan Staf -->
+        <h2 class="category-header">Tim Koki dan Staf</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://restomart.com/wp-content/uploads/2018/10/cookery_l5.jpg" alt="Koki Utama">
+            </div>
+            <div class="gallery-item">
+                <img src="https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1528101936/4_Cara_Mempertahankan_Karyawan_Restoran_Anda_upserve_runadt.jpg"
+                    alt="Tim Staf">
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.overlay');
+
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function (event) {
+            const sidebar = document.querySelector('.sidebar');
+            const userIcon = document.querySelector('.user-icon');
+
+            if (!sidebar.contains(event.target) && !userIcon.contains(event.target)) {
+                sidebar.classList.remove('active');
+                document.querySelector('.overlay').classList.remove('active');
+            }
+        });
+    </script>
+    <script>
+        // Fungsi untuk mengubah tema
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+
+            if (currentTheme === 'dark') {
+                html.removeAttribute('data-theme');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+            }
+
+            // Simpan preferensi tema ke localStorage
+            localStorage.setItem('theme', html.getAttribute('data-theme') || 'light');
+        }
+
+        // Fungsi untuk memuat tema yang tersimpan
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+        }
+
+        // Panggil loadSavedTheme saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', loadSavedTheme);
+    </script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginLogoutButton = document.getElementById('loginLogoutButton');
+
+            // Cek token login
+            if (localStorage.getItem('loginToken')) {
+                // Jika token ada, ubah menjadi Logout
+                loginLogoutButton.textContent = 'Logout';
+                loginLogoutButton.href = 'index.html';
+            } else {
+                // Jika token tidak ada, tetap sebagai Login
+                loginLogoutButton.textContent = 'Login';
+                loginLogoutButton.href = 'login.html';
+            }
+        });
+
+        function handleLoginLogout() {
+            if (localStorage.getItem('loginToken')) {
+                // Jika sudah login, hapus token untuk logout
+                localStorage.removeItem('loginToken');
+                console.log('Token dihapus: ', localStorage.getItem('loginToken')); // Cek token setelah dihapus
+                window.location.href = 'login.html';
+            } else {
+                console.log('Token tidak ditemukan. Pengguna belum login.');
+                // Jika belum login, redirect ke halaman login
+                window.location.href = 'login.html';
+            }
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

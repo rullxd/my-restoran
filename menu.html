@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Restoran</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <img src="src/logo.png" alt="Logo" class="logo-img">
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="menu.html">Menu</a>
+                <a href="reservasi.html">Reservasi</a>
+                <a href="galeri.html">Galeri</a>
+                <a href="review_makanan.html">Review</a>
+            </div>
+            <div class="user-section">
+                <!-- User Icon -->
+                <div class="user-icon" onclick="toggleSidebar()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Overlay -->
+    <div class="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Menu Pengguna</h2>
+            <button class="close-btn" onclick="toggleSidebar()">×</button>
+        </div>
+        <div class="sidebar-content">
+            <ul class="sidebar-menu">
+                <li><a href="profile.html">Profil Saya</a></li>
+                <li><a href="#">Riwayat Pesanan</a></li>
+                <li><a href="reservasi_user.html">Reservasi Saya</a></li>
+                <li><a href="#">Voucher</a></li>
+                <li><a href="#">Pengaturan</a></li>
+                <li><a href="#">Bantuan</a></li>
+                <li>
+                    <a href="#" onclick="toggleTheme()">
+                        <i class="fas fa-moon"></i> Ganti Tema
+                    </a>
+                </li>
+            </ul>
+            <a id="loginLogoutButton" href="login.html" class="sidebar-cta-button"
+                onclick="handleLoginLogout()">Login</a>
+        </div>
+    </div>
+
+    <!-- Ikon Keranjang -->
+    <div id="cart-icon" class="cart-icon" onclick="openCart()">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cart-count">0</span>
+    </div>
+
+
+    <!-- Menu Section -->
+    <section class="menu-section">
+        <h1 class="menu-header">Menu Kami</h1>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('http://localhost:3000/menu')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayMenu(data.menu);
+                    } else {
+                        alert('Gagal memuat menu.');
+                    }
+                })
+                .catch(error => console.error('Error fetching menu:', error));
+        });
+
+        function displayMenu(menuItems) {
+            const menuSection = document.querySelector('.menu-section');
+            menuSection.innerHTML = '<h1 class="menu-header">Menu Kami</h1>'; // Kosongkan konten sebelumnya
+
+            // Urutan kategori yang diinginkan
+            const categories = [
+                "Makanan Pembuka",
+                "Makanan Utama",
+                "Hidangan Penutup",
+                "Minuman"
+            ];
+
+            // Mengelompokkan item berdasarkan kategori
+            const groupedItems = categories.reduce((result, category) => {
+                result[category] = menuItems.filter(item => item.category === category);
+                return result;
+            }, {});
+
+            // Iterasi berdasarkan urutan kategori
+            categories.forEach(category => {
+                if (groupedItems[category].length > 0) {
+                    // Buat header kategori
+                    const categoryHeader = document.createElement('h2');
+                    categoryHeader.className = 'category-header';
+                    categoryHeader.textContent = category;
+                    menuSection.appendChild(categoryHeader);
+
+                    // Buat grid item untuk setiap kategori
+                    const categoryGrid = document.createElement('div');
+                    categoryGrid.className = 'menu-grid';
+
+                    groupedItems[category].forEach(item => {
+                        const menuCard = document.createElement('div');
+                        menuCard.className = 'menu-card';
+                        menuCard.innerHTML = `
+                        <img src="${item.image_url}" alt="${item.name}" class="menu-image">
+                        <div class="menu-title">${item.name}</div>
+                        <p class="menu-description">${item.description}</p>
+                        <div class="menu-price">Rp ${item.price}</div>
+                        <a href="javascript:void(0);" class="order-btn" onclick="addToCart('${item.name}', 'Rp ${item.price}', '${item.image_url}', event)">Pesan Sekarang</a>
+                    `;
+                        categoryGrid.appendChild(menuCard);
+                    });
+
+                    menuSection.appendChild(categoryGrid);
+                }
+            });
+        }
+    </script>
+
+
+    <!-- Popup Keranjang -->
+    <div id="cart-popup" class="cart-popup">
+        <h2>Keranjang Belanja</h2>
+        <ul id="cart-items">
+            <!-- Daftar item akan muncul di sini -->
+        </ul>
+        <button onclick="closeCart()">Tutup Keranjang</button>
+    </div>
+
+    <script>
+        let cartCount = 0;
+
+        function openCart() {
+            document.getElementById("cart-popup").style.display = "block";
+        }
+
+        function closeCart() {
+            document.getElementById("cart-popup").style.display = "none";
+        }
+
+        // Fungsi untuk menambahkan item ke keranjang dengan animasi
+        // Fungsi untuk menambahkan item ke keranjang dengan animasi
+        function updateCartIcon() {
+            const cartPopup = document.getElementById("cart-popup");
+            const cartIcon = document.getElementById("cart-icon");
+
+            // Tampilkan ikon keranjang hanya jika ada item di keranjang
+            if (cartCount > 0) {
+                cartIcon.style.display = "flex";
+            } else {
+                cartIcon.style.display = "none";
+                cartPopup.style.display = "none";
+            }
+
+            // Tutup popup hanya jika total item 0
+
+        }
+        document.addEventListener('click', function (event) {
+            const cartPopup = document.getElementById("cart-popup");
+            const cartIcon = document.getElementById("cart-icon");
+
+            // Tutup popup jika klik terjadi di luar popup dan ikon keranjang
+            if (!cartPopup.contains(event.target) && !cartIcon.contains(event.target)) {
+                closeCart();
+            }
+        });
+        document.getElementById("cart-popup").addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+
+        // Mencegah event propagation ketika mengklik cart icon
+        document.getElementById("cart-icon").addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+
+        // Panggil updateCartIcon() di awal untuk memastikan ikon dan tombol ditampilkan dengan benar
+        updateCartIcon();
+
+        function addToCart(menuItem, harga, itemImageSrc, event) {
+            const cartItems = document.getElementById("cart-items");
+            const existingItem = Array.from(cartItems.children).find(
+                item => item.dataset.itemName === menuItem
+            );
+
+            if (existingItem) {
+                const quantitySpan = existingItem.querySelector(".item-quantity");
+                let quantity = parseInt(quantitySpan.textContent, 10);
+                quantity++;
+                quantitySpan.textContent = quantity;
+            } else {
+                const listItem = document.createElement("li");
+                listItem.dataset.itemName = menuItem;
+                listItem.innerHTML = `
+            ${menuItem} - ${harga} x 
+            <span class="item-quantity">1</span>
+            <span class="icon-button increase-btn">+</span>
+            <span class="icon-button decrease-btn">−</span>
+        `;
+
+                cartItems.appendChild(listItem);
+
+                // Event listener untuk ikon +
+                listItem.querySelector(".increase-btn").addEventListener("click", () => {
+                    const quantitySpan = listItem.querySelector(".item-quantity");
+                    let quantity = parseInt(quantitySpan.textContent, 10);
+                    quantity++;
+                    quantitySpan.textContent = quantity;
+                    cartCount++;
+                    document.getElementById("cart-count").textContent = cartCount;
+                    updateCartIcon();
+                });
+
+                // Event listener untuk ikon -
+                listItem.querySelector(".decrease-btn").addEventListener("click", () => {
+                    const quantitySpan = listItem.querySelector(".item-quantity");
+                    let quantity = parseInt(quantitySpan.textContent, 10);
+                    if (quantity > 1) {
+                        quantity--;
+                        quantitySpan.textContent = quantity;
+                        cartCount--;
+                        document.getElementById("cart-count").textContent = cartCount;
+                    } else {
+                        cartItems.removeChild(listItem);
+                        cartCount--;
+                        document.getElementById("cart-count").textContent = cartCount;
+                    }
+                    updateCartIcon();
+                });
+            }
+
+            cartCount++;
+            document.getElementById("cart-count").textContent = cartCount;
+            updateCartIcon();
+
+            const itemImage = document.createElement("img");
+            itemImage.src = itemImageSrc;
+            itemImage.className = "menu-item-animate";
+            itemImage.style.position = "fixed";
+            itemImage.style.width = "50px";
+            itemImage.style.height = "50px";
+            itemImage.style.top = `${event.clientY}px`;
+            itemImage.style.left = `${event.clientX}px`;
+            document.body.appendChild(itemImage);
+
+            const cartIcon = document.getElementById("cart-icon");
+            setTimeout(() => {
+                itemImage.style.transition = "all 0.6s ease";
+                itemImage.style.top = `${cartIcon.getBoundingClientRect().top}px`;
+                itemImage.style.left = `${cartIcon.getBoundingClientRect().left}px`;
+            }, 100);
+
+            itemImage.addEventListener("transitionend", () => {
+                document.body.removeChild(itemImage);
+            });
+        }
+
+        // Panggil updateCartIcon() di awal untuk memastikan ikon tidak muncul saat kosong
+        updateCartIcon();
+
+
+
+        // Tambahkan event listener ke semua tombol "Pesan Sekarang"
+        document.querySelectorAll('.order-btn').forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                const menuItem = this.parentNode.querySelector('.menu-title').textContent;
+                const harga = this.parentNode.querySelector('.menu-price').textContent;
+                const itemImageSrc = this.parentNode.querySelector('.menu-image').src;
+                addToCart(menuItem, harga, itemImageSrc, event);
+            });
+        });
+
+        // Variabel global untuk menyimpan user_id
+        let userId = null;
+
+        // Fungsi untuk mengambil cart items dari server saat halaman dimuat
+        function loadCartItems() {
+            const loginToken = localStorage.getItem('loginToken');
+            userId = localStorage.getItem('userId');
+
+            if (userId) {
+                fetch(`http://localhost:3000/cart/${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Reset cart count
+                            cartCount = 0;
+
+                            // Clear existing cart items
+                            const cartItems = document.getElementById("cart-items");
+                            cartItems.innerHTML = '';
+
+                            // Add items from database to cart
+                            data.cart_items.forEach(item => {
+                                addToCartFromDB(item);
+                            });
+
+                            updateCartIcon();
+                        }
+                    })
+                    .catch(error => console.error('Error loading cart:', error));
+            }
+        }
+
+        // Fungsi untuk menambahkan item dari database ke cart
+        function addToCartFromDB(item) {
+            const cartItems = document.getElementById("cart-items");
+            const listItem = document.createElement("li");
+            listItem.dataset.itemName = item.menu_item_name;
+            listItem.innerHTML = `
+        ${item.menu_item_name} - Rp ${item.price} x 
+        <span class="item-quantity">${item.quantity}</span>
+        <span class="icon-button increase-btn">+</span>
+        <span class="icon-button decrease-btn">−</span>
+    `;
+
+            cartItems.appendChild(listItem);
+            cartCount += item.quantity;
+            document.getElementById("cart-count").textContent = cartCount;
+
+            // Add event listeners for + and - buttons
+            addQuantityControlListeners(listItem, item);
+        }
+
+        // Modifikasi fungsi addToCart untuk menyimpan ke database
+        function addToCart(menuItem, harga, itemImageSrc, event) {
+            if (!userId) {
+                alert('Silakan login terlebih dahulu');
+                return;
+            }
+
+            const price = parseFloat(harga.replace('Rp ', '').replace(',', ''));
+
+            fetch('http://localhost:3000/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    menu_item_name: menuItem,
+                    quantity: 1,
+                    price: price,
+                    image_url: itemImageSrc
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadCartItems(); // Reload cart items from server
+
+                        // Animasi item
+                        const itemImage = document.createElement("img");
+                        itemImage.src = itemImageSrc;
+                        itemImage.className = "menu-item-animate";
+                        // ... kode animasi yang sudah ada ...
+                    }
+                })
+                .catch(error => console.error('Error adding to cart:', error));
+        }
+
+        // Fungsi untuk menambahkan event listeners pada tombol + dan -
+        function addQuantityControlListeners(listItem, item) {
+            listItem.querySelector(".increase-btn").addEventListener("click", () => {
+                updateCartItemQuantity(item.menu_item_name, item.quantity + 1);
+            });
+
+            listItem.querySelector(".decrease-btn").addEventListener("click", () => {
+                if (item.quantity > 1) {
+                    updateCartItemQuantity(item.menu_item_name, item.quantity - 1);
+                } else {
+                    removeCartItem(item.menu_item_name);
+                }
+            });
+        }
+
+        // Fungsi untuk update quantity
+        function updateCartItemQuantity(menuItemName, newQuantity) {
+            fetch('http://localhost:3000/cart/update', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    menu_item_name: menuItemName,
+                    quantity: newQuantity
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadCartItems(); // Reload cart items from server
+                    }
+                })
+                .catch(error => console.error('Error updating cart:', error));
+        }
+
+        // Fungsi untuk menghapus item
+        function removeCartItem(menuItemName) {
+            fetch('http://localhost:3000/cart/remove', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: userId,
+                    menu_item_name: menuItemName
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadCartItems(); // Reload cart items from server
+                    }
+                })
+                .catch(error => console.error('Error removing cart item:', error));
+        }
+
+        // Panggil loadCartItems saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCartItems();
+        });
+    </script>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.overlay');
+
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function (event) {
+            const sidebar = document.querySelector('.sidebar');
+            const userIcon = document.querySelector('.user-icon');
+
+            if (!sidebar.contains(event.target) && !userIcon.contains(event.target)) {
+                sidebar.classList.remove('active');
+                document.querySelector('.overlay').classList.remove('active');
+            }
+        });
+    </script>
+    <script>
+        // Fungsi untuk mengubah tema
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+
+            if (currentTheme === 'dark') {
+                html.removeAttribute('data-theme');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+            }
+
+            // Simpan preferensi tema ke localStorage
+            localStorage.setItem('theme', html.getAttribute('data-theme') || 'light');
+        }
+
+        // Fungsi untuk memuat tema yang tersimpan
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+        }
+
+        // Panggil loadSavedTheme saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', loadSavedTheme);
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginLogoutButton = document.getElementById('loginLogoutButton');
+
+            // Cek token login
+            if (localStorage.getItem('loginToken')) {
+                // Jika token ada, ubah menjadi Logout
+                loginLogoutButton.textContent = 'Logout';
+                loginLogoutButton.href = 'index.html';
+            } else {
+                // Jika token tidak ada, tetap sebagai Login
+                loginLogoutButton.textContent = 'Login';
+                loginLogoutButton.href = 'login.html';
+            }
+        });
+
+        function handleLoginLogout() {
+            if (localStorage.getItem('loginToken')) {
+                // Jika sudah login, hapus token untuk logout
+                localStorage.removeItem('loginToken');
+                console.log('Token dihapus: ', localStorage.getItem('loginToken')); // Cek token setelah dihapus
+                window.location.href = 'login.html';
+            } else {
+                console.log('Token tidak ditemukan. Pengguna belum login.');
+                // Jika belum login, redirect ke halaman login
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+
+</html>
